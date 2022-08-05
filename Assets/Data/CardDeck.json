@@ -1,0 +1,316 @@
+{
+  "cardStats": [
+    {
+      "cardID": 0,
+      "shownName": "1",
+      "penaltyPoint": 1,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 1,
+      "shownName": "2",
+      "penaltyPoint": 2,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 2,
+      "shownName": "3",
+      "penaltyPoint": 3,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 3,
+      "shownName": "4",
+      "penaltyPoint": 4,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 4,
+      "shownName": "5",
+      "penaltyPoint": 5,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 5,
+      "shownName": "6",
+      "penaltyPoint": 6,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 6,
+      "shownName": "7",
+      "penaltyPoint": 7,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 7,
+      "shownName": "8",
+      "penaltyPoint": 8,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 8,
+      "shownName": "9",
+      "penaltyPoint": 9,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 9,
+      "shownName": "10",
+      "penaltyPoint": 10,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 10,
+      "shownName": "J",
+      "penaltyPoint": 10,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 11,
+      "shownName": "Q",
+      "penaltyPoint": 10,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 12,
+      "shownName": "K",
+      "penaltyPoint": 10,
+      "type": "SPADES"
+    },
+    {
+      "cardID": 13,
+      "shownName": "1",
+      "penaltyPoint": 1,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 14,
+      "shownName": "2",
+      "penaltyPoint": 2,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 15,
+      "shownName": "3",
+      "penaltyPoint": 3,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 16,
+      "shownName": "4",
+      "penaltyPoint": 4,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 17,
+      "shownName": "5",
+      "penaltyPoint": 5,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 18,
+      "shownName": "6",
+      "penaltyPoint": 6,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 19,
+      "shownName": "7",
+      "penaltyPoint": 7,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 20,
+      "shownName": "8",
+      "penaltyPoint": 8,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 21,
+      "shownName": "9",
+      "penaltyPoint": 9,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 22,
+      "shownName": "10",
+      "penaltyPoint": 10,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 23,
+      "shownName": "J",
+      "penaltyPoint": 10,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 24,
+      "shownName": "Q",
+      "penaltyPoint": 10,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 25,
+      "shownName": "K",
+      "penaltyPoint": 10,
+      "type": "DIAMONDS"
+    },
+    {
+      "cardID": 26,
+      "shownName": "1",
+      "penaltyPoint": 1,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 27,
+      "shownName": "2",
+      "penaltyPoint": 2,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 28,
+      "shownName": "3",
+      "penaltyPoint": 3,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 29,
+      "shownName": "4",
+      "penaltyPoint": 4,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 30,
+      "shownName": "5",
+      "penaltyPoint": 5,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 31,
+      "shownName": "6",
+      "penaltyPoint": 6,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 32,
+      "shownName": "7",
+      "penaltyPoint": 7,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 33,
+      "shownName": "8",
+      "penaltyPoint": 8,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 34,
+      "shownName": "9",
+      "penaltyPoint": 9,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 35,
+      "shownName": "10",
+      "penaltyPoint": 10,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 36,
+      "shownName": "J",
+      "penaltyPoint": 10,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 37,
+      "shownName": "Q",
+      "penaltyPoint": 10,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 38,
+      "shownName": "K",
+      "penaltyPoint": 10,
+      "type": "HEARTS"
+    },
+    {
+      "cardID": 39,
+      "shownName": "1",
+      "penaltyPoint": 1,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 40,
+      "shownName": "2",
+      "penaltyPoint": 2,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 41,
+      "shownName": "3",
+      "penaltyPoint": 3,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 42,
+      "shownName": "4",
+      "penaltyPoint": 4,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 43,
+      "shownName": "5",
+      "penaltyPoint": 5,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 44,
+      "shownName": "6",
+      "penaltyPoint": 6,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 45,
+      "shownName": "7",
+      "penaltyPoint": 7,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 46,
+      "shownName": "8",
+      "penaltyPoint": 8,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 47,
+      "shownName": "9",
+      "penaltyPoint": 9,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 48,
+      "shownName": "10",
+      "penaltyPoint": 10,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 49,
+      "shownName": "J",
+      "penaltyPoint": 10,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 50,
+      "shownName": "Q",
+      "penaltyPoint": 10,
+      "type": "CLUBS"
+    },
+    {
+      "cardID": 51,
+      "shownName": "K",
+      "penaltyPoint": 10,
+      "type": "CLUBS"
+    }
+  ]
+}

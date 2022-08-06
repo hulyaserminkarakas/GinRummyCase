@@ -2,7 +2,7 @@
   "cardStats": [
     {
       "cardID": 0,
-      "shownName": "1",
+      "shownName": "A",
       "penaltyPoint": 1,
       "type": "SPADES"
     },
@@ -80,7 +80,7 @@
     },
     {
       "cardID": 13,
-      "shownName": "1",
+      "shownName": "A",
       "penaltyPoint": 1,
       "type": "DIAMONDS"
     },
@@ -158,7 +158,7 @@
     },
     {
       "cardID": 26,
-      "shownName": "1",
+      "shownName": "A",
       "penaltyPoint": 1,
       "type": "HEARTS"
     },
@@ -236,7 +236,7 @@
     },
     {
       "cardID": 39,
-      "shownName": "1",
+      "shownName": "A",
       "penaltyPoint": 1,
       "type": "CLUBS"
     },

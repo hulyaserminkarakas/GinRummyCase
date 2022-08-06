@@ -20,13 +20,13 @@ public class GameController : MonoBehaviour
     private Dictionary<int, bool> cardUsageList = new();
     private List<int> ownCardIDList = new();
 
-    private SortingAlgorithms sorter;
+    private Sorter sorter;
     void Start()
     {
         ServiceLocator.instance.gameController = this;
         ServiceLocator.instance.pool.SetDefault();
 
-        sorter = new SortingAlgorithms();
+        sorter = new Sorter();
         
         ParseCardDeckData();
         DetermineCardList();
@@ -76,8 +76,12 @@ public class GameController : MonoBehaviour
             cardObject.value = cardObject.data.cardID % 13 + 1; 
             cardObject.transform.SetParent(cardHolder);
             cardObject.gameObject.SetActive(true);
-            cardObject.transform.position = new Vector3(initPos + step * i, - Mathf.Abs((initPos + step * i )* 0.18f), 0);
-            cardObject.transform.Rotate(Vector3.back * (initPos +step * i));
+            cardObject.transform.position = new Vector3(initPos + step * i,0 , 0);
+            cardObject.suit = (Card.Suit)Enum.Parse(typeof(Card.Suit), cardObject.data.type);
+            
+            
+            // cardObject.transform.position = new Vector3(initPos + step * i, - Mathf.Abs((initPos + step * i )* 0.12f), 0);
+            // cardObject.transform.Rotate(Vector3.back * (initPos + step * i) * 3) ;
             
             
             cardObject.order = i; 
@@ -120,9 +124,9 @@ public class GameController : MonoBehaviour
     {
         Card cardObject;
         
-        for (int i = 0; i < cardCount; i++)
+        for (int i = 0; i < cards.Count; i++)
         {
-            cardObject = gameCards[i];
+            cardObject = cards[i];
             
             cardObject.data = dataModel.cards.cardStats[cards[i].data.cardID];
             cardObject.gameObject.SetActive(true);
@@ -136,24 +140,21 @@ public class GameController : MonoBehaviour
     
     public void On123SortButtonPressed()
     {
-        SortableCardGroup calcCards = sorter.SortByCompleteSequences(gameCards);
-        List<Card> finalOrder = calcCards.sorted;
-        finalOrder.AddRange(calcCards.unsorted);
-        ReorderCards(finalOrder);
+        var calcCards = sorter.SortByCompleteSequences(gameCards);
+        ReorderCards(calcCards);
     }
+
+    
     
     public void On777SortButtonPressed()
     {
-        SortableCardGroup calcCards = sorter.SortByCompleteGroups(gameCards);
-        List<Card> finalOrder = calcCards.sorted;
-        finalOrder.AddRange(calcCards.unsorted);
-        ReorderCards(finalOrder);
+        var calcCards = sorter.SortByCompleteGroups(gameCards);
+        ReorderCards(calcCards);
     }
     
     public void OnSmartSortButtonPressed()
     {
-        SortableCardGroup calcCards = sorter.SmartSort(gameCards);
-        ReorderCards(calcCards.sorted);
+       
     }
     
     public void OnChangeThemeButtonPressed()

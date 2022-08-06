@@ -32,21 +32,14 @@ public class DataModel
         public int cardID;
         public string shownName;
         public int penaltyPoint;
-        public String type;
+        public string type;
         
         public CardData(int cardID, string shownName, int penaltyPoint, string type)
         {
             this.cardID = cardID;
             this.shownName = shownName;
             this.penaltyPoint = penaltyPoint;
-            this.type =  type;
+            this.type = type;
         }
     }
-}
-public enum CardType
-{
-    SPADES,
-    DIAMONDS,
-    HEARTS,
-    CLUBS
 }

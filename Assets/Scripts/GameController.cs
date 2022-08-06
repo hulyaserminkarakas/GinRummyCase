@@ -19,10 +19,15 @@ public class GameController : MonoBehaviour
 
     private Dictionary<int, bool> cardUsageList = new();
     private List<int> ownCardIDList = new();
+
+    private SortingAlgorithms sorter;
     void Start()
     {
         ServiceLocator.instance.gameController = this;
         ServiceLocator.instance.pool.SetDefault();
+
+        sorter = new SortingAlgorithms();
+        
         ParseCardDeckData();
         DetermineCardList();
         PlaceCards();
@@ -58,23 +63,29 @@ public class GameController : MonoBehaviour
 
     private void PlaceCards()
     {
-        float initPos = -5.5f;
-        float step = 1.1f;
+        float initPos = -4.4f;
+        float step = - initPos /5f;
+
+        Card cardObject;
 
         for (int i = 0; i < cardCount; i++)
         {
-            Card cardObject = ServiceLocator.instance.pool.GetPooledCard();
+            cardObject = ServiceLocator.instance.pool.GetPooledCard();
             
-            cardObject.id = ownCardIDList[i];
+            cardObject.data = dataModel.cards.cardStats[ownCardIDList[i]];
+            cardObject.value = cardObject.data.cardID % 13 + 1; 
             cardObject.transform.SetParent(cardHolder);
             cardObject.gameObject.SetActive(true);
-            cardObject.transform.position = new Vector3(initPos + step * i, 0, 0);
+            cardObject.transform.position = new Vector3(initPos + step * i, - Mathf.Abs((initPos + step * i )* 0.18f), 0);
+            cardObject.transform.Rotate(Vector3.back * (initPos +step * i));
+            
+            
             cardObject.order = i; 
             
             cardObject.cardImage.sortingOrder = i;
-            cardObject.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(cardObject.id );
+            cardObject.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(cardObject.data.cardID );
             
-            cardUsageList[cardObject.id ] = true;
+            cardUsageList[cardObject.data.cardID ] = true;
             
             gameCards.Add(cardObject);
             
@@ -101,27 +112,62 @@ public class GameController : MonoBehaviour
         
         foreach (var card in gameCards)
         {
-            card.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(card.id);
+            card.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(card.data.cardID);
+        }
+    }
+
+    private void ReorderCards(List<Card> cards)
+    {
+        Card cardObject;
+        
+        for (int i = 0; i < cardCount; i++)
+        {
+            cardObject = gameCards[i];
+            
+            cardObject.data = dataModel.cards.cardStats[cards[i].data.cardID];
+            cardObject.gameObject.SetActive(true);
+            cardObject.transform.position = cardPositions[i];
+            cardObject.order = i; 
+            
+            cardObject.cardImage.sortingOrder = i;
+            cardObject.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(cardObject.data.cardID );
         }
     }
     
     public void On123SortButtonPressed()
     {
-        
+        SortableCardGroup calcCards = sorter.SortByCompleteSequences(gameCards);
+        List<Card> finalOrder = calcCards.sorted;
+        finalOrder.AddRange(calcCards.unsorted);
+        ReorderCards(finalOrder);
     }
     
     public void On777SortButtonPressed()
     {
-        
+        SortableCardGroup calcCards = sorter.SortByCompleteGroups(gameCards);
+        List<Card> finalOrder = calcCards.sorted;
+        finalOrder.AddRange(calcCards.unsorted);
+        ReorderCards(finalOrder);
     }
     
     public void OnSmartSortButtonPressed()
     {
-        
+        SortableCardGroup calcCards = sorter.SmartSort(gameCards);
+        ReorderCards(calcCards.sorted);
     }
     
     public void OnChangeThemeButtonPressed()
     {
         ChangeTheme();
+    }
+
+    public void OnShuffleCardsButtonPressed()
+    {
+        gameCards.Clear();
+        ownCardIDList.Clear();
+        ServiceLocator.instance.pool.SetDefault();
+        
+        DetermineCardList();
+        PlaceCards();
     }
 }

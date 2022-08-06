@@ -6,8 +6,9 @@ public class Card : MonoBehaviour
 {
     public SpriteRenderer cardImage;
     public GameObject cardFilter;
-    [HideInInspector] public int id;
-
+    [HideInInspector] public DataModel.CardData data;
+    [HideInInspector] public int value;
+    
     [HideInInspector] public int order;
 
 }

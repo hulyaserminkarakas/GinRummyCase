@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CardMovementController : MonoBehaviour
@@ -10,13 +6,6 @@ public class CardMovementController : MonoBehaviour
     private Vector3 offset;
 
     [SerializeField] private Card card;
-
-
-
-    private void Awake()
-    {
-    }
-
 
     void OnMouseDown()
     {                                                                                                                                                                                                  

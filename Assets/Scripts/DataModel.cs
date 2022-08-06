@@ -32,14 +32,14 @@ public class DataModel
         public int cardID;
         public string shownName;
         public int penaltyPoint;
-        public CardType type;
+        public String type;
         
         public CardData(int cardID, string shownName, int penaltyPoint, string type)
         {
             this.cardID = cardID;
             this.shownName = shownName;
             this.penaltyPoint = penaltyPoint;
-            this.type = (CardType)System.Enum.Parse(typeof(CardType), type);
+            this.type =  type;
         }
     }
 }

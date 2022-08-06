@@ -48,7 +48,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.01775214, y: -1.443847}
+  m_Offset: {x: 0.01775217, y: -0.031502545}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -59,7 +59,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.9822893, y: 2.8462305}
+  m_Size: {x: 1.9822893, y: 2.7960877}
   m_EdgeRadius: 0
 --- !u!114 &-7617530614389192059
 MonoBehaviour:
@@ -75,6 +75,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardImage: {fileID: 2892438193608191233}
   cardFilter: {fileID: 0}
+  data:
+    cardID: 0
+    shownName: 
+    penaltyPoint: 0
+    type: 0
+  value: 0
   order: 0
 --- !u!114 &4711906455681779803
 MonoBehaviour:

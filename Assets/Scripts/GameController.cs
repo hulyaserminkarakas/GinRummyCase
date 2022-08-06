@@ -178,17 +178,11 @@ public class GameController : MonoBehaviour
     
     public void OnSmartSortButtonPressed()
     {
-        /*var calcCards = sorter.SmartSort(GetCardObjList(gameCards));
+        var calcCards = sorter.SmartSort(GetCardObjList(gameCards));
         penaltyText.text = "Penalty: " + calcCards.penalty;
-        ReorderCards(calcCards.sortedCards);*/
+        ReorderCards(calcCards.sortedCards);
         
-        InitCardDeck();
-        CardSortInfo sortedList = sorter.SmartSort(cardDeck);
-    }
-    
-    List<CardObj> cardDeck;
-    private void InitCardDeck()
-    {
+        /*List<CardObj> cardDeck;
         cardDeck = new List<CardObj>();
         
         cardDeck.Add(new CardObj(CardObj.Suit.HEARTS, 1));
@@ -202,8 +196,9 @@ public class GameController : MonoBehaviour
         cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 1));
         cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 3));
         cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 4));
+        
+        CardSortInfo sortedList = sorter.SmartSort(cardDeck);*/
     }
-
     
     public void OnChangeThemeButtonPressed()
     {

@@ -8,7 +8,7 @@ public class CardSortInfo
 {
     public Dictionary<int,List<CardObj>>  blocks;
 
-    public List<CardObj> groupedCards = new();
+    public List<List<CardObj>> groupedCards = new();
     public List<CardObj> discardedCards = new();
     public List<CardObj> sortedCards = new();
 
@@ -57,7 +57,7 @@ public class Sorter
                 {
                     if (groupableCards.Count >= MinCardToGroup)
                     {
-                        sortInfo.groupedCards.AddRange(groupableCards);
+                        sortInfo.groupedCards.Add(groupableCards);
                     }
                     else
                     {
@@ -73,7 +73,9 @@ public class Sorter
         }
 
         List<CardObj> sortedCards = new List<CardObj>();
-        sortedCards.AddRange(sortInfo.groupedCards);
+        foreach (var cards in sortInfo.groupedCards)
+            sortedCards.AddRange(cards);
+        
         sortedCards.AddRange(sortInfo.discardedCards);
         
         sortInfo.penalty = GetPenaltyPoint(sortInfo);
@@ -99,14 +101,16 @@ public class Sorter
         foreach (var block in sortInfo.blocks)
         {
             if (block.Value.Count >= MinCardToGroup)
-                sortInfo.groupedCards.AddRange(block.Value);
+                sortInfo.groupedCards.Add(block.Value);
             
             else
                 sortInfo.discardedCards.AddRange(block.Value);
         }
 
         List<CardObj> sortedCards = new List<CardObj>();
-        sortedCards.AddRange(sortInfo.groupedCards);
+        foreach (var cards in sortInfo.groupedCards)
+            sortedCards.AddRange(cards);
+        
         sortedCards.AddRange(sortInfo.discardedCards);
         
         sortInfo.penalty = GetPenaltyPoint(sortInfo);
@@ -114,21 +118,183 @@ public class Sorter
         return sortInfo;
     }
 
-
     public CardSortInfo SmartSort(List<CardObj> cardList)
+    {
+        CardSortInfo sortedBySequence = SortBySequences(cardList);
+        CardSortInfo sortedByGroup = SortByGroups(cardList);
+
+        List<List<CardObj>> potentialBlocks = new();
+
+        foreach (var cards in sortedByGroup.groupedCards)
+        {
+            potentialBlocks.AddRange(GetSubBlocksOfGroups(cards));
+        }
+        
+        foreach (var cards in sortedBySequence.groupedCards)
+        {
+            potentialBlocks.AddRange(GetSubBlocksOfSequence(cards));
+        }
+
+        Dictionary<int, CardSortInfo> sorts = new Dictionary<int, CardSortInfo>();
+        List<CardObj> sortedCards = new List<CardObj>();
+        CardSortInfo sortInfo =  sortedBySequence;
+        
+        sorts.Add(GetPenaltyPoint(sortInfo), sortInfo);
+        
+        foreach (var firstBlockList in potentialBlocks)
+        {
+            sortInfo = new CardSortInfo();
+            foreach (var secondBlockList in potentialBlocks)
+            {
+                sortInfo = new CardSortInfo();
+                if(IsMutualCardExist(firstBlockList, secondBlockList))
+                    continue;
+                
+                foreach (var thirdBlockList in potentialBlocks)
+                {
+                    sortInfo = new CardSortInfo();
+                    if(IsMutualCardExist(firstBlockList, thirdBlockList))
+                        continue;
+                    
+                    if(IsMutualCardExist(secondBlockList, thirdBlockList))
+                        continue;
+                    
+                    sortInfo.groupedCards.Add(firstBlockList);
+                    sortInfo.groupedCards.Add(secondBlockList);
+                    sortInfo.groupedCards.Add(thirdBlockList);
+
+                    sortedCards = new List<CardObj>();
+                    sortedCards.AddRange(firstBlockList);
+                    sortedCards.AddRange(secondBlockList);
+                    sortedCards.AddRange(thirdBlockList);
+
+                    sortInfo.discardedCards = GetRemainingCards(cardList, sortedCards);
+                    
+                    sortedCards.AddRange(sortInfo.discardedCards);
+                    sortInfo.sortedCards = sortedCards;
+                    if (sorts.ContainsKey(GetPenaltyPoint(sortInfo)))
+                        sorts[GetPenaltyPoint(sortInfo)] = sortInfo;
+                    else
+                        sorts.Add(GetPenaltyPoint(sortInfo), sortInfo);
+
+                }
+                
+                sortInfo.groupedCards.Add(firstBlockList);
+                sortInfo.groupedCards.Add(secondBlockList);
+
+                sortedCards = new List<CardObj>();
+                sortedCards.AddRange(firstBlockList);
+                sortedCards.AddRange(secondBlockList);
+
+                sortInfo.discardedCards = GetRemainingCards(cardList, sortedCards);
+                    
+                sortedCards.AddRange(sortInfo.discardedCards);
+                sortInfo.sortedCards = sortedCards;
+                if (sorts.ContainsKey(GetPenaltyPoint(sortInfo)))
+                    sorts[GetPenaltyPoint(sortInfo)] = sortInfo;
+                else
+                    sorts.Add(GetPenaltyPoint(sortInfo), sortInfo);
+                
+            }
+            
+            sortInfo.groupedCards.Add(firstBlockList);
+
+            sortedCards = new List<CardObj>();
+            sortedCards.AddRange(firstBlockList);
+
+            sortInfo.discardedCards = GetRemainingCards(cardList, sortedCards);
+                    
+            sortedCards.AddRange(sortInfo.discardedCards);
+            sortInfo.sortedCards = sortedCards;
+            if (sorts.ContainsKey(GetPenaltyPoint(sortInfo)))
+                sorts[GetPenaltyPoint(sortInfo)] = sortInfo;
+            else
+                sorts.Add(GetPenaltyPoint(sortInfo), sortInfo);
+            
+        }
+
+        CardSortInfo bestSort = sorts[sorts.Keys.Min()];
+        bestSort.penalty = GetPenaltyPoint(bestSort);
+        return bestSort;
+    }
+    
+    private List<CardObj> GetRemainingCards(List<CardObj> allList, List<CardObj> addedItems)
+    {
+        List<CardObj> result = new();
+        result.AddRange(allList);
+        
+        foreach (var card in addedItems)
+            result.Remove(card);
+
+        return result;
+    }
+    
+    private List<List<CardObj>> GetSubBlocksOfSequence(List<CardObj> cards)
+    {
+        List<List<CardObj>> finalList = new();
+
+        if (cards.Count == MinCardToGroup) 
+            finalList.Add(cards);
+        else if(cards.Count > MinCardToGroup)
+        {
+            finalList.Add(cards);
+            for (int i = 0; i < cards.Count - MinCardToGroup; i++)
+                finalList.Add(cards.GetRange(i,MinCardToGroup));
+        }
+
+        return finalList;
+    }
+
+
+    private List<List<CardObj>> GetSubBlocksOfGroups(List<CardObj> cards)
+    {
+        List<List<CardObj>> finalList = new();
+        if (cards.Count == MinCardToGroup) 
+            finalList.Add(cards);
+        else if(cards.Count > MinCardToGroup)
+        {
+            finalList.Add(cards);
+            foreach (var card in cards)
+            {
+                List<CardObj> tempList = new List<CardObj>();
+                tempList.AddRange(cards);
+                tempList.Remove(card);
+                finalList.Add(tempList);
+            }
+        }
+
+        return finalList;
+    }
+
+    private bool IsMutualCardExist(List<CardObj> first, List<CardObj> second)
+    {
+        foreach (var card in first)
+            if (second.Contains(card))
+                return true;
+
+        return false;
+    }
+
+    /*public CardSortInfo SmartSort(List<CardObj> cardList)
     {
         CardSortInfo sortedBySequence = SortBySequences(cardList);
         CardSortInfo sortedByGroup = SortByGroups(cardList);
 
         List<CardObj> mutualCards = new();
 
-        foreach (var card in sortedBySequence.groupedCards)
-        {
-            if (sortedByGroup.groupedCards.Contains(card))
-            {
+        List<CardObj> sequencedCards = new();
+        foreach (var cards in sortedBySequence.groupedCards)
+            sequencedCards.AddRange(cards);
+        
+        
+        List<CardObj> groupedCards = new();
+        foreach (var cards in sortedBySequence.groupedCards)
+            groupedCards.AddRange(cards);
+
+        foreach (var card in groupedCards)
+            if (sequencedCards.Contains(card))
                 mutualCards.Add(card);
-            }
-        }
+        
 
         CardSortInfo bestSort =  SmartSortAlgorithm(cardList);
         
@@ -167,8 +333,10 @@ public class Sorter
         
         if (groupCardsOfDiscardedSequence.penalty < sequenceCardsOfDiscardedGroups.penalty)
         {
-            sortedCards.AddRange(sortedBySequence.groupedCards);
-            sortedCards.AddRange(groupCardsOfDiscardedSequence.groupedCards);
+            foreach (var cards in sortedBySequence.groupedCards)
+                sortedCards.AddRange(cards);
+            foreach (var cards in groupCardsOfDiscardedSequence.groupedCards)
+                sortedCards.AddRange(cards);
             sortedCards.AddRange(groupCardsOfDiscardedSequence.discardedCards);
         
             groupCardsOfDiscardedSequence.penalty = GetPenaltyPoint(groupCardsOfDiscardedSequence);
@@ -178,8 +346,10 @@ public class Sorter
         }
         else
         {
-            sortedCards.AddRange(sortedByGroup.groupedCards);
-            sortedCards.AddRange(sequenceCardsOfDiscardedGroups.groupedCards);
+            foreach (var cards in sortedByGroup.groupedCards)
+                sortedCards.AddRange(cards);
+            foreach (var cards in sequenceCardsOfDiscardedGroups.groupedCards)
+                sortedCards.AddRange(cards);
             sortedCards.AddRange(sequenceCardsOfDiscardedGroups.discardedCards);
         
             sequenceCardsOfDiscardedGroups.penalty = GetPenaltyPoint(sequenceCardsOfDiscardedGroups);
@@ -187,7 +357,7 @@ public class Sorter
             
             return sequenceCardsOfDiscardedGroups;
         }
-    }
+    }*/
     
 
     private int GetPenaltyPoint(CardSortInfo sortInfo)

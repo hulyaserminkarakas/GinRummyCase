@@ -18,32 +18,32 @@ public class CardMovementController : MonoBehaviour
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
         transform.position = curPosition;
 
-        if (card.order > 0 && curPosition.x < ServiceLocator.instance.gameController.cardPositions[card.order - 1].x)
+        if (card.cardObj.order > 0 && curPosition.x < ServiceLocator.instance.gameController.cardPositions[card.cardObj.order - 1].x)
         {
-            SwapCards(ServiceLocator.instance.gameController.GetCardObjectByOrder(card.order - 1));
+            SwapCards(ServiceLocator.instance.gameController.GetCardObjectByOrder(card.cardObj.order - 1));
         }
         
-        if (card.order < ServiceLocator.instance.gameController.cardPositions.Count - 1 &&  curPosition.x > ServiceLocator.instance.gameController.cardPositions[card.order + 1].x)
+        if (card.cardObj.order < ServiceLocator.instance.gameController.cardPositions.Count - 1 &&  curPosition.x > ServiceLocator.instance.gameController.cardPositions[card.cardObj.order + 1].x)
         {
-            SwapCards(ServiceLocator.instance.gameController.GetCardObjectByOrder(card.order + 1));
+            SwapCards(ServiceLocator.instance.gameController.GetCardObjectByOrder(card.cardObj.order + 1));
         }
 
     }
 
     void OnMouseUp()
     {
-        transform.position = ServiceLocator.instance.gameController.cardPositions[card.order];
+        transform.position = ServiceLocator.instance.gameController.cardPositions[card.cardObj.order];
     }
 
 
     private void SwapCards(Card swapCard)
     {
-        int newOrder = swapCard.order;
-        swapCard.order = card.order;
-        swapCard.cardImage.sortingOrder = card.order;
-        swapCard.transform.position = ServiceLocator.instance.gameController.cardPositions[card.order];
+        int newOrder = swapCard.cardObj.order;
+        swapCard.cardObj.order = card.cardObj.order;
+        swapCard.cardImage.sortingOrder = card.cardObj.order;
+        swapCard.transform.position = ServiceLocator.instance.gameController.cardPositions[card.cardObj.order];
 
-        card.order = newOrder;
+        card.cardObj.order = newOrder;
         card.cardImage.sortingOrder = newOrder;
         card.transform.position = ServiceLocator.instance.gameController.cardPositions[newOrder];
 

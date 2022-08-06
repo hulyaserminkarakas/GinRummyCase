@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class CardSortInfo
 {
-    public Dictionary<int,List<Card>>  blocks;
+    public Dictionary<int,List<CardObj>>  blocks;
 
-    public List<List<Card>> groupedCards = new();
-    public List<Card> discardedCards= new();
+    public List<List<CardObj>> groupedCards = new();
+    public List<CardObj> discardedCards= new();
     
     public CardSortInfo()
     {
-        blocks = new Dictionary<int, List<Card>>();
+        blocks = new Dictionary<int, List<CardObj>>();
 
     }
 }
@@ -21,7 +21,7 @@ public class Sorter
 {
     private const int MinCardToGroup = 3;
 
-    public List<Card> SortByCompleteSequences(List<Card> cardList)
+    public List<CardObj> SortBySequences(List<CardObj> cardList)
     {
         CardSortInfo sortInfo = new CardSortInfo();
         foreach (var card in cardList)
@@ -30,15 +30,15 @@ public class Sorter
                 sortInfo.blocks[(int)card.suit].Add(card);
 
             else
-                sortInfo.blocks.Add((int)card.suit, new List<Card> { card });
+                sortInfo.blocks.Add((int)card.suit, new List<CardObj> { card });
         }
 
         foreach (var suitBlock in sortInfo.blocks)
         {
-            List<Card> singleSuitList = suitBlock.Value.OrderByDescending(x => x.value).ToList();
-            List<Card> groupableCards = new List<Card>();
+            List<CardObj> singleSuitList = suitBlock.Value.OrderByDescending(x => x.value).ToList();
+            List<CardObj> groupableCards = new List<CardObj>();
 
-            Dictionary<int, Card> tempDict = new Dictionary<int, Card>();
+            Dictionary<int, CardObj> tempDict = new Dictionary<int, CardObj>();
 
 
             for (int i = 0; i < 14; i++)
@@ -59,7 +59,7 @@ public class Sorter
                     {
                         sortInfo.discardedCards.AddRange(groupableCards);
                     }
-                    groupableCards = new List<Card>();
+                    groupableCards = new List<CardObj>();
                 }
                 else
                 {
@@ -68,7 +68,7 @@ public class Sorter
             }
         }
         
-        List<Card> sortedCards = new();
+        List<CardObj> sortedCards = new();
         
         foreach (var cards in sortInfo.groupedCards)
         {
@@ -80,7 +80,7 @@ public class Sorter
     }
 
 
-    public List<Card> SortByCompleteGroups(List<Card> cardList)
+    public List<CardObj> SortByGroups(List<CardObj> cardList)
     {
         CardSortInfo sortInfo = new CardSortInfo();
         foreach (var card in cardList)
@@ -89,7 +89,7 @@ public class Sorter
                 sortInfo.blocks[card.value].Add(card);
             
             else
-                sortInfo.blocks.Add(card.value, new List<Card>{card});
+                sortInfo.blocks.Add(card.value, new List<CardObj>{card});
             
         }
 
@@ -104,7 +104,7 @@ public class Sorter
                 sortInfo.discardedCards.AddRange(block.Value);
             
         }
-        List<Card> sortedCards = new();
+        List<CardObj> sortedCards = new();
         foreach (var cards in sortInfo.groupedCards)
         {
             sortedCards.AddRange(cards);

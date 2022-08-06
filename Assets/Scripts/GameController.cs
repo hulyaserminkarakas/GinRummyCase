@@ -71,25 +71,25 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < cardCount; i++)
         {
             cardObject = ServiceLocator.instance.pool.GetPooledCard();
-            
-            cardObject.data = dataModel.cards.cardStats[ownCardIDList[i]];
-            cardObject.value = cardObject.data.cardID % 13 + 1; 
+
+            DataModel.CardData data = dataModel.cards.cardStats[ownCardIDList[i]];
+            cardObject.cardObj = new CardObj((CardObj.Suit)Enum.Parse(typeof(CardObj.Suit), data.type) , data.cardID % 13 + 1);
+            cardObject.cardObj.data = data;
             cardObject.transform.SetParent(cardHolder);
             cardObject.gameObject.SetActive(true);
             cardObject.transform.position = new Vector3(initPos + step * i,0 , 0);
-            cardObject.suit = (Card.Suit)Enum.Parse(typeof(Card.Suit), cardObject.data.type);
             
             
             // cardObject.transform.position = new Vector3(initPos + step * i, - Mathf.Abs((initPos + step * i )* 0.12f), 0);
             // cardObject.transform.Rotate(Vector3.back * (initPos + step * i) * 3) ;
             
             
-            cardObject.order = i; 
+            cardObject.cardObj.order = i; 
             
             cardObject.cardImage.sortingOrder = i;
-            cardObject.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(cardObject.data.cardID );
+            cardObject.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(data.cardID );
             
-            cardUsageList[cardObject.data.cardID ] = true;
+            cardUsageList[data.cardID] = true;
             
             gameCards.Add(cardObject);
             
@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour
     {
         foreach (var card in gameCards)
         {
-            if (card.order == order)
+            if (card.cardObj.order == order)
                 return card;
         }
 
@@ -116,39 +116,59 @@ public class GameController : MonoBehaviour
         
         foreach (var card in gameCards)
         {
-            card.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(card.data.cardID);
+            card.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(card.cardObj.data.cardID);
         }
     }
 
-    private void ReorderCards(List<Card> cards)
+    private void ReorderCards(List<CardObj> cards)
     {
         Card cardObject;
         
         for (int i = 0; i < cards.Count; i++)
         {
-            cardObject = cards[i];
+            cardObject = GetCardByID(cards[i].data.cardID);
             
-            cardObject.data = dataModel.cards.cardStats[cards[i].data.cardID];
+            cardObject.cardObj.data = dataModel.cards.cardStats[cards[i].data.cardID];
             cardObject.gameObject.SetActive(true);
             cardObject.transform.position = cardPositions[i];
-            cardObject.order = i; 
+            cardObject.cardObj.order = i; 
             
             cardObject.cardImage.sortingOrder = i;
-            cardObject.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(cardObject.data.cardID );
+            cardObject.cardImage.sprite = ServiceLocator.instance.themeManager.GetCardImage(cardObject.cardObj.data.cardID );
         }
+    }
+
+    private Card GetCardByID(int id)
+    {
+        foreach (var card in gameCards)
+        {
+            if (card.cardObj.data.cardID == id)
+                return card;
+        }
+
+        throw new Exception("Card could not found by id");
     }
     
     public void On123SortButtonPressed()
     {
-        var calcCards = sorter.SortByCompleteSequences(gameCards);
+        
+        var calcCards = sorter.SortBySequences(GetCardObjList(gameCards));
         ReorderCards(calcCards);
     }
 
-    
-    
+    private List<CardObj> GetCardObjList(List<Card> gameCards)
+    {
+        List<CardObj> cards = new List<CardObj>();
+
+        foreach (var card in gameCards)
+            cards.Add(card.cardObj);
+        
+        return cards;
+    }
+
     public void On777SortButtonPressed()
     {
-        var calcCards = sorter.SortByCompleteGroups(gameCards);
+        var calcCards = sorter.SortByGroups(GetCardObjList(gameCards));
         ReorderCards(calcCards);
     }
     

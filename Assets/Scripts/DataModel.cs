@@ -7,14 +7,11 @@ using UnityEngine;
 public class DataModel
 {
     public CardDeck cards;
-
-   
+    
     public DataModel(string jsonString)
     {
         cards =  JsonUtility.FromJson<CardDeck>(jsonString);
     }
-
-
 
     [Serializable]
     public class CardDeck

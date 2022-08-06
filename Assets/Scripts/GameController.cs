@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-    
     [SerializeField] private Transform cardHolder;
     [SerializeField] private Text penaltyText;
 
@@ -74,17 +73,12 @@ public class GameController : MonoBehaviour
             cardObject = ServiceLocator.instance.pool.GetPooledCard();
 
             DataModel.CardData data = dataModel.cards.cardStats[ownCardIDList[i]];
-            cardObject.cardObj = new CardObj((CardObj.Suit)Enum.Parse(typeof(CardObj.Suit), data.type) , data.cardID % 13 + 1);
+            cardObject.cardObj = new CardObj((Suit)Enum.Parse(typeof(Suit), data.type) , data.cardID % 13 + 1);
             cardObject.cardObj.data = data;
             cardObject.transform.SetParent(cardHolder);
             cardObject.gameObject.SetActive(true);
-            cardObject.transform.position = new Vector3(initPos + step * i,0 , 0);
-            
-            
-            // cardObject.transform.position = new Vector3(initPos + step * i, - Mathf.Abs((initPos + step * i )* 0.12f), 0);
-            // cardObject.transform.Rotate(Vector3.back * (initPos + step * i) * 3) ;
-            
-            
+            cardObject.transform.position = new Vector3(initPos + step * i, -2 , 0);
+
             cardObject.cardObj.order = i; 
             
             cardObject.cardImage.sortingOrder = i;
@@ -94,11 +88,10 @@ public class GameController : MonoBehaviour
             
             gameCards.Add(cardObject);
             
-            cardPositions.Add(new Vector3(initPos + step * i, 0, 0));
+            cardPositions.Add(new Vector3(initPos + step * i, -2 , 0));
         }
     }
 
-    
     public Card GetCardObjectByOrder(int order)
     {
         foreach (var card in gameCards)
@@ -167,8 +160,6 @@ public class GameController : MonoBehaviour
         ReorderCards(calcCards.sortedCards);
     }
 
-
-
     public void On777SortButtonPressed()
     {
         var calcCards = sorter.SortByGroups(GetCardObjList(gameCards));
@@ -181,23 +172,6 @@ public class GameController : MonoBehaviour
         var calcCards = sorter.SmartSort(GetCardObjList(gameCards));
         penaltyText.text = "Penalty: " + calcCards.penalty;
         ReorderCards(calcCards.sortedCards);
-        
-        /*List<CardObj> cardDeck;
-        cardDeck = new List<CardObj>();
-        
-        cardDeck.Add(new CardObj(CardObj.Suit.HEARTS, 1));
-        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 2));
-        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 5));
-        cardDeck.Add(new CardObj(CardObj.Suit.HEARTS, 4));
-        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 1));
-        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 3));
-        cardDeck.Add(new CardObj(CardObj.Suit.CLUBS, 4));
-        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 4));
-        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 1));
-        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 3));
-        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 4));
-        
-        CardSortInfo sortedList = sorter.SmartSort(cardDeck);*/
     }
     
     public void OnChangeThemeButtonPressed()

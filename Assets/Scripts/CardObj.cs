@@ -14,12 +14,11 @@ public class CardObj
         this.suit = suit;
         this.value = value;
     }
-    
-    public enum Suit
-    {
-        SPADES,
-        DIAMONDS,
-        HEARTS,
-        CLUBS
-    }
+}
+public enum Suit
+{
+    SPADES,
+    DIAMONDS,
+    HEARTS,
+    CLUBS
 }

@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
     
     [SerializeField] private Transform cardHolder;
+    [SerializeField] private Text penaltyText;
 
     public int cardCount = 11;
     
@@ -108,6 +109,16 @@ public class GameController : MonoBehaviour
 
         throw new Exception("Card not found, check order!");
     }
+    
+    private List<CardObj> GetCardObjList(List<Card> gameCards)
+    {
+        List<CardObj> cards = new List<CardObj>();
+
+        foreach (var card in gameCards)
+            cards.Add(card.cardObj);
+        
+        return cards;
+    }
 
 
     public void ChangeTheme()
@@ -151,31 +162,48 @@ public class GameController : MonoBehaviour
     
     public void On123SortButtonPressed()
     {
-        
         var calcCards = sorter.SortBySequences(GetCardObjList(gameCards));
-        ReorderCards(calcCards);
+        penaltyText.text = "Penalty: " + calcCards.penalty;
+        ReorderCards(calcCards.sortedCards);
     }
 
-    private List<CardObj> GetCardObjList(List<Card> gameCards)
-    {
-        List<CardObj> cards = new List<CardObj>();
 
-        foreach (var card in gameCards)
-            cards.Add(card.cardObj);
-        
-        return cards;
-    }
 
     public void On777SortButtonPressed()
     {
         var calcCards = sorter.SortByGroups(GetCardObjList(gameCards));
-        ReorderCards(calcCards);
+        penaltyText.text = "Penalty: " + calcCards.penalty;
+        ReorderCards(calcCards.sortedCards);
     }
     
     public void OnSmartSortButtonPressed()
     {
-       
+        /*var calcCards = sorter.SmartSort(GetCardObjList(gameCards));
+        penaltyText.text = "Penalty: " + calcCards.penalty;
+        ReorderCards(calcCards.sortedCards);*/
+        
+        InitCardDeck();
+        CardSortInfo sortedList = sorter.SmartSort(cardDeck);
     }
+    
+    List<CardObj> cardDeck;
+    private void InitCardDeck()
+    {
+        cardDeck = new List<CardObj>();
+        
+        cardDeck.Add(new CardObj(CardObj.Suit.HEARTS, 1));
+        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 2));
+        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 5));
+        cardDeck.Add(new CardObj(CardObj.Suit.HEARTS, 4));
+        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 1));
+        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 3));
+        cardDeck.Add(new CardObj(CardObj.Suit.CLUBS, 4));
+        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 4));
+        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 1));
+        cardDeck.Add(new CardObj(CardObj.Suit.SPADES, 3));
+        cardDeck.Add(new CardObj(CardObj.Suit.DIAMONDS, 4));
+    }
+
     
     public void OnChangeThemeButtonPressed()
     {

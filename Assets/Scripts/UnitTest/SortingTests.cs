@@ -5,7 +5,7 @@ using NUnit.Framework;
 public class SortingTests
 {
     private Sorter sorter = new Sorter();
-    List<CardObj> cardDeck;
+    private  List<CardObj> cardDeck;
 
     private void InitCardDeck()
     {
@@ -47,8 +47,8 @@ public class SortingTests
         expectedOutput.Add(new CardObj(CardObj.Suit.CLUBS, 4));
         
         
-        List<CardObj> sortedList = sorter.SortBySequences(cardDeck);
-        CollectionAssert.AreEqual(sortedList, expectedOutput);
+        CardSortInfo sortedList = sorter.SortBySequences(cardDeck);
+        CollectionAssert.AreEqual(expectedOutput, sortedList.sortedCards);
     }
     
     [Test]
@@ -72,14 +72,33 @@ public class SortingTests
         expectedOutput.Add(new CardObj(CardObj.Suit.DIAMONDS, 3));
         expectedOutput.Add(new CardObj(CardObj.Suit.DIAMONDS, 5));
         
-        List<CardObj> sortedList = sorter.SortBySequences(cardDeck);
-        CollectionAssert.AreEqual(expectedOutput, sortedList);
+        CardSortInfo sortedList = sorter.SortBySequences(cardDeck);
+        CollectionAssert.AreEqual(expectedOutput, sortedList.sortedCards);
     }
     
     [Test]
     public void SmartSortTest()
     {
+        InitCardDeck();
+
+        List<CardObj> expectedOutput = new List<CardObj>();
         
+        expectedOutput.Add(new CardObj(CardObj.Suit.SPADES, 1));
+        expectedOutput.Add(new CardObj(CardObj.Suit.DIAMONDS, 1));
+        expectedOutput.Add(new CardObj(CardObj.Suit.HEARTS, 1));
+        
+        expectedOutput.Add(new CardObj(CardObj.Suit.SPADES, 4));
+        expectedOutput.Add(new CardObj(CardObj.Suit.HEARTS, 4));
+        expectedOutput.Add(new CardObj(CardObj.Suit.CLUBS, 4));
+        
+        expectedOutput.Add(new CardObj(CardObj.Suit.DIAMONDS, 3));
+        expectedOutput.Add(new CardObj(CardObj.Suit.DIAMONDS, 4));
+        expectedOutput.Add(new CardObj(CardObj.Suit.DIAMONDS, 5));
+        
+        expectedOutput.Add(new CardObj(CardObj.Suit.SPADES, 2));
+        expectedOutput.Add(new CardObj(CardObj.Suit.SPADES, 3));
+        
+        CardSortInfo sortedList = sorter.SmartSort(cardDeck);
+        CollectionAssert.AreEqual(expectedOutput, sortedList.sortedCards);
     }
-    
 }

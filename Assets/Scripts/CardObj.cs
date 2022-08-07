@@ -14,6 +14,20 @@ public class CardObj
         this.suit = suit;
         this.value = value;
     }
+    
+    public override bool Equals(object obj)
+    {
+        if (obj == null)
+            return false;
+
+        CardObj other = obj as CardObj;
+        if ((object)other == null)
+            return false;
+
+
+        return this.value == other.value
+               && this.suit.Equals(other.suit);
+    }
 }
 public enum Suit
 {

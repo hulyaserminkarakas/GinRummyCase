@@ -4,6 +4,7 @@ using UnityEngine;
 public class ThemeManager : MonoBehaviour
 {
     public ThemeResources resource;
+
     private void Start()
     {
         ServiceLocator.instance.themeManager = this;
@@ -26,8 +27,6 @@ public class ThemeManager : MonoBehaviour
         
         else if (GetPlayerTheme() == ThemeType.BLUE)
             SetPlayerTheme(ThemeType.WHITE);
-        
-        Debug.Log(GetPlayerTheme());
     }
     
     public Sprite GetCardImage(int cardID)

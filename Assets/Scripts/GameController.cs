@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -26,8 +27,14 @@ public class GameController : MonoBehaviour
         ServiceLocator.instance.gameController = this;
         ServiceLocator.instance.pool.SetDefault();
 
-        sorter = new Sorter();
+        StartCoroutine(WaitForManagersReady());
         
+        sorter = new Sorter();
+    }
+    
+    IEnumerator WaitForManagersReady()
+    {
+        yield return null;
         ParseCardDeckData();
         DetermineCardList();
         PlaceCards();
@@ -35,7 +42,7 @@ public class GameController : MonoBehaviour
 
     private void ParseCardDeckData()
     {
-        string jsonString = File.ReadAllText(Application.dataPath + "/Data/CardDeck.json");
+        string jsonString = Resources.Load<TextAsset>("Data/CardDeck").text;
         dataModel = new DataModel(jsonString);
 
         foreach (DataModel.CardData card in dataModel.cards.cardStats)
@@ -77,7 +84,7 @@ public class GameController : MonoBehaviour
             cardObject.cardObj.data = data;
             cardObject.transform.SetParent(cardHolder);
             cardObject.gameObject.SetActive(true);
-            cardObject.transform.position = new Vector3(initPos + step * i, -2 , 0);
+            cardObject.transform.position = new Vector3(initPos + step * i, -1 , 0);
 
             cardObject.cardObj.order = i; 
             
@@ -88,7 +95,7 @@ public class GameController : MonoBehaviour
             
             gameCards.Add(cardObject);
             
-            cardPositions.Add(new Vector3(initPos + step * i, -2 , 0));
+            cardPositions.Add(new Vector3(initPos + step * i, -1 , 0));
         }
     }
 
